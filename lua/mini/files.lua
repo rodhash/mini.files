@@ -740,7 +740,7 @@ MiniFiles.config = {
     -- Width of focused window
     width_focus = 50,
     -- Width of non-focused window
-    width_nofocus = 15,
+    width_nofocus = 25,
     -- Width of preview window
     width_preview = 25,
   },
@@ -1231,12 +1231,13 @@ MiniFiles.default_prefix = function(fs_entry)
   end
 
   -- Try falling back to 'nvim-web-devicons'
-  if fs_entry.fs_type == 'directory' then return ' ', 'MiniFilesDirectory' end
+  if fs_entry.fs_type == 'directory' then return '   ', 'FloatTitle' end
   local has_devicons, devicons = pcall(require, 'nvim-web-devicons')
   if not has_devicons then return ' ', 'MiniFilesFile' end
 
   local icon, hl = devicons.get_icon(fs_entry.name, nil, { default = false })
-  return (icon or '') .. ' ', hl or 'MiniFilesFile'
+  -- return (' ' .. icon .. ' ' or '') .. ' ', hl or 'MiniFilesFile'
+  return (icon and (' ' .. icon .. ' ') or '') .. ' ', hl or 'MiniFilesFile'
 end
 
 --- Default sort of file system entries
@@ -2489,7 +2490,7 @@ end
 H.window_open = function(buf_id, config)
   -- Add always the same extra data
   config.anchor = 'NW'
-  config.border = (vim.fn.exists('+winborder') == 0 or vim.o.winborder == '') and 'single' or nil
+  config.border = (vim.fn.exists('+winborder') == 0 or vim.o.winborder == '') and 'rounded' or nil
   config.focusable = true
   config.relative = 'editor'
   config.style = 'minimal'
